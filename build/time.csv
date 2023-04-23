@@ -1,0 +1,137 @@
+"++++++++++++++++++++++++++++++++++++++++++++++++++++",
+"ADMM_Step",138470,138574,139300,138524,138416,141890,140330,138988,139046,139440,
+"size of","ADMM_Step",10,
+"mean of","ADMM_Step",139298,
+"std dev of","ADMM_Step",1027.13,
+
+"C",3,
+"size of","C",1,
+"mean of","C",3,
+"std dev of","C",0,
+
+"CT",473,486,170,183,192,180,176,182,175,182,187,249,
+"size of","CT",12,
+"mean of","CT",236.25,
+"std dev of","CT",110.54,
+
+"M",5736,5523,5780,5508,5890,5712,5808,5505,5795,5530,5769,5513,6197,5900,5756,5625,5880,5494,5953,5624,
+"size of","M",20,
+"mean of","M",5724.9,
+"std dev of","M",182.684,
+
+"MT",6158,5703,5768,5845,5837,5846,5796,6054,5863,5800,
+"size of","MT",10,
+"mean of","MT",5867,
+"std dev of","MT",129.506,
+
+"Psi",1218,1146,1174,1193,1410,1165,1137,1152,1143,1132,1140,1449,1145,1201,1123,1349,1220,1137,1137,1147,
+"size of","Psi",20,
+"mean of","Psi",1195.9,
+"std dev of","Psi",92.4672,
+
+"PsiT",100112,101716,101149,101402,101358,104240,101746,101303,101588,101871,
+"size of","PsiT",10,
+"mean of","PsiT",101648,
+"std dev of","PsiT",982.749,
+
+"U_update",5537,4684,5075,4667,4712,4694,4686,4694,4981,4799,
+"size of","U_update",10,
+"mean of","U_update",4852.9,
+"std dev of","U_update",264.183,
+
+"V_update",115423,116603,116438,116496,116382,119526,117017,116637,116731,116915,
+"size of","V_update",10,
+"mean of","V_update",116817,
+"std dev of","V_update",992.624,
+
+"W_update",410,398,421,399,387,490,537,396,397,430,
+"size of","W_update",10,
+"mean of","W_update",426.5,
+"std dev of","W_update",46.3535,
+
+"X_update",7168,7024,7181,7068,7016,7053,7621,7037,7139,7401,
+"size of","X_update",10,
+"mean of","X_update",7170.8,
+"std dev of","X_update",185.649,
+
+"eta_update",3007,2951,2975,2919,2899,3202,2960,3082,2908,2904,
+"size of","eta_update",10,
+"mean of","eta_update",2980.7,
+"std dev of","eta_update",91.0605,
+
+"fftshift",280,249,317,273,298,250,318,273,304,248,323,301,292,264,317,274,301,248,319,271,301,247,330,271,421,307,396,349,310,263,319,319,314,253,318,274,335,252,318,291,
+"size of","fftshift",40,
+"mean of","fftshift",297.7,
+"std dev of","fftshift",37.8267,
+
+"ifftshift",248,269,167,164,243,267,160,159,241,320,157,158,260,269,154,174,239,269,156,160,238,270,162,208,243,271,157,170,306,273,157,165,242,287,178,162,242,280,157,162,250,
+"size of","ifftshift",41,
+"mean of","ifftshift",214.976,
+"std dev of","ifftshift",52.4723,
+
+"init_Matrices",3679,
+"size of","init_Matrices",1,
+"mean of","init_Matrices",3679,
+"std dev of","init_Matrices",0,
+
+"precompute_H_fft",2762,
+"size of","precompute_H_fft",1,
+"mean of","precompute_H_fft",2762,
+"std dev of","precompute_H_fft",0,
+
+"precompute_PsiTPsi",2205,
+"size of","precompute_PsiTPsi",1,
+"mean of","precompute_PsiTPsi",2205,
+"std dev of","precompute_PsiTPsi",0,
+
+"precompute_R_divmat",6884,
+"size of","precompute_R_divmat",1,
+"mean of","precompute_R_divmat",6884,
+"std dev of","precompute_R_divmat",0,
+
+"precompute_X_divmat",1853,
+"size of","precompute_X_divmat",1,
+"mean of","precompute_X_divmat",1853,
+"std dev of","precompute_X_divmat",0,
+
+"r_calc",108982,110247,109685,110083,109946,112839,110391,110165,110321,110441,
+"size of","r_calc",10,
+"mean of","r_calc",110310,
+"std dev of","r_calc",937.172,
+
+"rho_update",628,635,701,671,719,628,649,625,597,587,
+"size of","rho_update",10,
+"mean of","rho_update",644,
+"std dev of","rho_update",40.05,
+
+"roll",288,542,44507,54971,235,482,242,569,45789,55224,233,501,293,641,45250,55238,250,484,241,537,45557,55215,228,491,248,536,45498,55162,218,485,237,540,45794,57770,229,773,243,534,45538,55534,260,512,245,511,45549,55072,277,611,267,539,45794,55129,222,488,235,525,45685,55531,227,495,
+"size of","roll",60,
+"mean of","roll",17092,
+"std dev of","roll",23794.5,
+
+"runADMM",1412110,
+"size of","runADMM",1,
+"mean of","runADMM",1.41211e+06,
+"std dev of","runADMM",0,
+
+"softThresh",1373,1397,1035,996,1038,1009,1027,1002,1076,1004,1038,1011,1061,1015,1035,1023,1076,1054,1044,1017,
+"size of","softThresh",20,
+"mean of","softThresh",1066.55,
+"std dev of","softThresh",108.543,
+
+"xi_update",6293,6268,6497,6301,6290,6291,6853,6513,6286,6401,
+"size of","xi_update",10,
+"mean of","xi_update",6399.3,
+"std dev of","xi_update",174.079,
+
+"removeColumn",
+"size of","removeColumn",0,
+"mean of","removeColumn",-nan,
+"std dev of","removeColumn",-nan,
+
+"removeRow",
+"size of","removeRow",0,
+"mean of","removeRow",-nan,
+"std dev of","removeRow",-nan,
+
+"-----------------------------------------------------",
