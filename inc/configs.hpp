@@ -11,7 +11,7 @@ float mu1 = 1.0e-6;
 float mu2 = 1.0e-5;
 float mu3 = 4.0e-5;
 float tau = 0.0001;
-int iters = 10;
+int iters = 4;
 // sensor size is initialized in main.cpp
 // it will be global to all files, later i will try to find a better way
 int sensor_size[2];

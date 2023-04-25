@@ -629,7 +629,7 @@ cv::Mat runADMM(cv::Mat *psf, cv::Mat *data){
 
 	cv::Mat dest;
 	for (int i = 0; i < iters; i++){
-		std::cout << "ADMM step " << i << "/" << iters << std::endl;
+		std::cout << "ADMM step " << i+1 << "/" << iters << std::endl;
 		ADMM_Step(&X, &U, &V, &W, &xi, &eta, &rho, &H_fft, data, &X_divmat, &R_divmat);
 	}
 

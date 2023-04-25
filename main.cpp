@@ -58,9 +58,13 @@ int main(int argc, char** argv ){
 	cv::Mat image = runADMM(&psf, &data);
 
 	// NOTICE: image should be converted to another type to show
-	image.convertTo(image, CV_32F, 1000.0, 0.0); // alpha value increases the contrast of the image, beta value is the brightness
+	image.convertTo(image, CV_32F, 2000.0, 0.0); // alpha value increases the contrast of the image, beta value is the brightness
 
-	cv::imwrite("output.png", image);
+	// Save the image
+	cv::FileStorage file("constructed_image.ext", cv::FileStorage::WRITE);
+	file << "result image" << image;
+
+	// Show the image
   namedWindow("Display Image", cv::WINDOW_AUTOSIZE );
   imshow("Display Image", image);
   cv::waitKey(0);
