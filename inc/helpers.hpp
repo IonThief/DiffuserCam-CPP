@@ -20,32 +20,18 @@
 
 
 std::vector<std::chrono::microseconds> ADMM_Step_times;
-std::vector<std::chrono::microseconds> C_times;
-std::vector<std::chrono::microseconds> CT_times;
-std::vector<std::chrono::microseconds> M_times;
-std::vector<std::chrono::microseconds> MT_times;
-std::vector<std::chrono::microseconds> Psi_times;
-std::vector<std::chrono::microseconds> PsiT_times;
 std::vector<std::chrono::microseconds> U_update_times;
 std::vector<std::chrono::microseconds> V_update_times;
 std::vector<std::chrono::microseconds> W_update_times;
 std::vector<std::chrono::microseconds> X_update_times;
 std::vector<std::chrono::microseconds> eta_update_times;
-std::vector<std::chrono::microseconds> fftshift_times;
-std::vector<std::chrono::microseconds> ifftshift_times;
-std::vector<std::chrono::microseconds> init_Matrices_times;
 std::vector<std::chrono::microseconds> precompute_H_fft_times;
 std::vector<std::chrono::microseconds> precompute_PsiTPsi_times;
 std::vector<std::chrono::microseconds> precompute_R_divmat_times;
 std::vector<std::chrono::microseconds> precompute_X_divmat_times;
-std::vector<std::chrono::microseconds> r_calc_times;
 std::vector<std::chrono::microseconds> rho_update_times;
-std::vector<std::chrono::microseconds> roll_times;
 std::vector<std::chrono::microseconds> runADMM_times;
-std::vector<std::chrono::microseconds> softThresh_times;
 std::vector<std::chrono::microseconds> xi_update_times;
-std::vector<std::chrono::microseconds> removeColumn_times;
-std::vector<std::chrono::microseconds> removeRow_times;
 
 
 //------------------------//
@@ -55,7 +41,6 @@ std::vector<std::chrono::microseconds> removeRow_times;
 // output is two channel matrix same size as src
 //------------------------//
 void softThresh(cv::Mat *dest, cv::Mat *src, float tau){
-	class Timer t(&softThresh_times); // start timer
   struct Operator {
     float tau;
     cv::Mat *modMat;
@@ -79,8 +64,8 @@ void softThresh(cv::Mat *dest, cv::Mat *src, float tau){
 // DONE
 //------------------------//
 /* Roll function similar to np.roll in python */
+// TODO check again No need for the last row or last column to be swapped
 void roll(cv::Mat *dest, cv::Mat *src, int shift, int axis){
-	class Timer t(&roll_times); // start timer
   src->copyTo(*dest);
 
   if (axis==0) {
@@ -108,7 +93,6 @@ void roll(cv::Mat *dest, cv::Mat *src, int shift, int axis){
 // DONE
 //------------------------//
 void Psi(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&Psi_times); // start timer
   cv::Mat v0, v1;
   roll(&v0, src, 1, 0);
   cv::subtract(v0, *src, v0);
@@ -148,7 +132,6 @@ void U_update(cv::Mat *dest, cv::Mat *eta, cv::Mat *image_est, float tau){
 // DONE
 //------------------------//
 void removeColumn(cv::Mat& mat, int colIndex){
-	class Timer t(&removeColumn_times); // start timer
   if (colIndex < 0 || colIndex >= mat.cols) {
       throw std::out_of_range("Invalid column index");
   }
@@ -167,7 +150,6 @@ void removeColumn(cv::Mat& mat, int colIndex){
 }
 
 void removeRow(cv::Mat& mat, int rowIndex){
-	class Timer t(&removeRow_times); // start timer
   if (rowIndex < 0 || rowIndex >= mat.rows) {
       throw std::out_of_range("Invalid row index");
   }
@@ -187,7 +169,6 @@ void removeRow(cv::Mat& mat, int rowIndex){
 
 // fftshift implementation
 void fftshift(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&fftshift_times); // start timer
   int bottom = 0;
   int right  = 0;
 
@@ -234,7 +215,6 @@ void fftshift(cv::Mat *dest, cv::Mat *src){
 
 // ifftshift implementation
 void ifftshift(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&ifftshift_times); // start timer
   int top  = 0;
   int left = 0;
 
@@ -280,7 +260,6 @@ void ifftshift(cv::Mat *dest, cv::Mat *src){
 
 // M function implementation
 void M(cv::Mat *dest, cv::Mat *vk, cv::Mat *H_fft){
-	class Timer t(&M_times); // start timer
 	ifftshift(dest, vk);
 	cv::dft(*dest, *dest, cv::DFT_COMPLEX_OUTPUT);
 	cv::mulSpectrums(*dest, *H_fft, *dest, 0, false);
@@ -297,7 +276,6 @@ void M(cv::Mat *dest, cv::Mat *vk, cv::Mat *H_fft){
 // DONE
 //------------------------//
 void C(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&C_times); // start timer
 	int full_size[2];
 
 	full_size[0] = sensor_size[0] * 2;
@@ -318,7 +296,6 @@ void C(cv::Mat *dest, cv::Mat *src){
 // DONE
 //------------------------//
 void CT(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&CT_times); // start timer
 	int full_size[2];
 
 	full_size[0] = sensor_size[0] * 2;
@@ -357,7 +334,6 @@ void W_update(cv::Mat *dest, cv::Mat *rho, cv::Mat *image_est){
 //------------------------//
 // src should be a 2 channel matrix
 void PsiT(cv::Mat *dest, cv::Mat *src){
-	class Timer t(&PsiT_times); // start timer
 	cv::Mat frames[src->channels()];
 	cv::Mat diffs[src->channels()];
 
@@ -377,7 +353,6 @@ void PsiT(cv::Mat *dest, cv::Mat *src){
 // DONE 100%
 //------------------------//
 void MT(cv::Mat *dest, cv::Mat *x, cv::Mat *H_fft){
-	class Timer t(&MT_times); // start timer
 	cv::Mat x_planes[x->channels()];
 
 	cv::split(*x, x_planes);
@@ -405,7 +380,6 @@ void MT(cv::Mat *dest, cv::Mat *x, cv::Mat *H_fft){
 // DONE 100%
 //------------------------//
 void r_calc(cv::Mat *dest, cv ::Mat *w, cv::Mat *rho, cv::Mat *u, cv::Mat *eta, cv::Mat *x, cv::Mat *xi, cv::Mat *H_fft){
-	class Timer t(&r_calc_times); // start timer
 
 	cv::Mat p1;
 	p1 = w->mul(mu3);
@@ -562,7 +536,6 @@ void rho_update(cv::Mat *rho, cv::Mat *V, cv::Mat *W){
 //
 //------------------------//
 void init_Matrices(cv::Mat *X, cv::Mat *U, cv::Mat *V, cv::Mat *W, cv::Mat *xi, cv::Mat *eta, cv::Mat *rho, cv::Mat *H_fft){
-	class Timer t(&init_Matrices_times); // start timer
 	int full_size[2];
 	full_size[0] = sensor_size[0] * 2;
 	full_size[1] = sensor_size[1] * 2;
@@ -645,88 +618,50 @@ cv::Mat runADMM(cv::Mat *psf, cv::Mat *data){
 void printFunctionTiming(std::vector<std::chrono::microseconds> durations, std::string functionName){
 	class csvfile file(CSV_FILE);
 	double sum = 0;
-
 	file << functionName;
 	for (auto i : durations){
-		file << i.count();
+		file << i.count()/1000.0;
 		sum += i.count();}
-	file << endrow;
-
-	file << "size of" << functionName;
-	file << durations.size() << endrow;
-	file << "mean of" << functionName;
-	file << sum/(durations.size()) << endrow;
-
+	file << sum/(durations.size())/1000.0;
 	double std_dev = 0;
 	for (auto i : durations)
 		std_dev += pow(((double)i.count() - sum/(durations.size())),2);
-	file << "std dev of" << functionName;
-	file << sqrt(std_dev/(durations.size())) << endrow;
+	file << sqrt(std_dev/(durations.size()))/1000.0;
 	file << endrow;
 }
 
 
-// 27 functions to time
-void printTimings(){
-	std::remove(CSV_FILE);  //remove the file if it exists
+void printTimings(void){
 	class csvfile file(CSV_FILE);
-	file << "++++++++++++++++++++++++++++++++++++++++++++++++++++" << endrow;
+	file << "Function_name";
+	for (int i = 0; i < iters; i++)
+		file << "Iteration_" + std::to_string(i+1) + " (ms)";
+	file << "Average" << "Std_dev" << endrow;
 
-	printFunctionTiming(ADMM_Step_times, "ADMM_Step");
-
-	printFunctionTiming(C_times, "C");
-
-	printFunctionTiming(CT_times, "CT");
-
-	printFunctionTiming(M_times, "M");
-
-	printFunctionTiming(MT_times, "MT");
-
-	printFunctionTiming(Psi_times, "Psi");
-
-	printFunctionTiming(PsiT_times, "PsiT");
 
 	printFunctionTiming(U_update_times, "U_update");
-
-	printFunctionTiming(V_update_times, "V_update");
 
 	printFunctionTiming(W_update_times, "W_update");
 
 	printFunctionTiming(X_update_times, "X_update");
 
+	printFunctionTiming(V_update_times, "V_update");
+
 	printFunctionTiming(eta_update_times, "eta_update");
-
-	printFunctionTiming(fftshift_times, "fftshift");
-
-	printFunctionTiming(ifftshift_times, "ifftshift");
-
-	printFunctionTiming(init_Matrices_times, "init_Matrices");
-
-	printFunctionTiming(precompute_H_fft_times, "precompute_H_fft");
-
-	printFunctionTiming(precompute_PsiTPsi_times, "precompute_PsiTPsi");
-
-	printFunctionTiming(precompute_R_divmat_times, "precompute_R_divmat");
-
-	printFunctionTiming(precompute_X_divmat_times, "precompute_X_divmat");
-
-	printFunctionTiming(r_calc_times, "r_calc");
 
 	printFunctionTiming(rho_update_times, "rho_update");
 
-	printFunctionTiming(roll_times, "roll");
-
-	printFunctionTiming(runADMM_times, "runADMM");
-
-	printFunctionTiming(softThresh_times, "softThresh");
-
 	printFunctionTiming(xi_update_times, "xi_update");
 
-	printFunctionTiming(removeColumn_times, "removeColumn");
+}
 
-	printFunctionTiming(removeRow_times, "removeRow");
 
-	file << "-----------------------------------------------------" << endrow;
+double averageStepTimes(void){
+	double sum = 0;
+	for (auto i : ADMM_Step_times)
+		sum += i.count();
+	return(sum/(ADMM_Step_times.size()))/1000.0;
+
 }
 
 #endif

@@ -6,5 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/home/ibrahim/thesis/software/cpp-algorithm/inc -isystem /usr/local/include/opencv4
 
-CXX_FLAGS = 
+CXX_FLAGS = -g
 
