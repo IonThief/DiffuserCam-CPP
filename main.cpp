@@ -40,12 +40,15 @@ int main(int argc, char** argv ){
 	file << "Resolution" << "Time (ms)" << endrow;
 
 	// I should've used a function to find the common factor for decrementing image size
-	//for (int i =0; psf.size().width >= 400; i++){
-	for (int i =0; i < 1; i++){
+	for (int i =0; psf.size().width >= 400; i++){
+	//for (int i =0; i < 1; i++){
   //------------------------//
   // Resize input images
 	// Correct
   //------------------------//
+	//cv::resize(psf, psf, cv::Size(psf.size().width*f, psf.size().height*f));
+	//cv::resize(data, data, cv::Size(data.size().width*f, data.size().height*f));
+
 	cv::resize(psf, psf, cv::Size(psf.size().width-40.0, psf.size().height-30.0));
 	cv::resize(data, data, cv::Size(data.size().width-40.0, data.size().height-30.0));
 
@@ -68,19 +71,18 @@ int main(int argc, char** argv ){
 
 	file << std::to_string(sensor_size[0]) + "x" + std::to_string(sensor_size[1]) << averageStepTimes() << endrow;
 
-	/*****************
-	** // NOTICE: image should be converted to another type to show
-	** image.convertTo(image, CV_32F, 2000.0, 0.0); // alpha value increases the contrast of the image, beta value is the brightness
+	// NOTICE: image should be converted to another type to show
+	image.convertTo(image, CV_32F, 9000.0-i*500, 0.0); // alpha value increases the contrast of the image, beta value is the brightness
 
-	** // Save the image
-	** cv::FileStorage file("constructed_image.ext", cv::FileStorage::WRITE);
-	** file << "result image" << image;
+	// Save the image
+	cv::FileStorage file("constructed_image.ext", cv::FileStorage::WRITE);
+	file << "result image" << image;
 
-	** // Show the image
-  ** namedWindow("Display Image", cv::WINDOW_AUTOSIZE );
-  ** imshow("Display Image", image);
-  ** cv::waitKey(0);
-	*****************/
+	// Show the image
+  namedWindow("Display Image", cv::WINDOW_AUTOSIZE );
+  imshow("Display Image", image);
+	cv::waitKey(1000);
+	cv::destroyAllWindows();
 
 	class csvfile file2("time.csv");
 	file2 << "Run #" + std::to_string(i) << endrow;

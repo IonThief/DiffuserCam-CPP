@@ -32,6 +32,9 @@ std::vector<std::chrono::microseconds> precompute_X_divmat_times;
 std::vector<std::chrono::microseconds> rho_update_times;
 std::vector<std::chrono::microseconds> runADMM_times;
 std::vector<std::chrono::microseconds> xi_update_times;
+std::vector<std::chrono::microseconds> r_calc_times;
+std::vector<std::chrono::microseconds> PsiT_times;
+std::vector<std::chrono::microseconds> MT_times;
 
 
 //------------------------//
@@ -69,23 +72,41 @@ void roll(cv::Mat *dest, cv::Mat *src, int shift, int axis){
   src->copyTo(*dest);
 
   if (axis==0) {
-    for(size_t i=0; i<shift; i++){
-      cv::Mat temp(0, dest->cols, dest->type());
-      dest->row((dest->rows)-1).copyTo(temp);
-      dest->pop_back(1);
-      cv::vconcat(temp, *dest, *dest);
-    }
-  }
+		if(shift>0){
+    	for(size_t i=0; i<shift; i++){
+    	  cv::Mat temp(0, dest->cols, dest->type());
+    	  dest->row((dest->rows)-1).copyTo(temp);
+			  dest->pop_back(1);
+			  cv::vconcat(temp, *dest, *dest);
+			}
+		} else {
+			for(size_t i=0; i<abs(shift); i++){
+				cv::Mat temp(0, dest->cols, dest->type());
+				dest->row(0).copyTo(temp);
+				cv::vconcat((*dest)(cv::Range(1, dest->rows), cv::Range::all()), temp, *dest);
+			}
+		}
+	}
+
   else if (axis==1) {
-    cv::rotate(*dest, *dest, cv::ROTATE_90_CLOCKWISE);
-    for(size_t i=0; i<shift; i++){
-      cv::Mat temp(0, dest->cols, dest->type());
-      dest->row((dest->rows)-1).copyTo(temp);
-      dest->pop_back(1);
-      cv::vconcat(temp, *dest, *dest);
-    }
-    cv::rotate(*dest, *dest, cv::ROTATE_90_COUNTERCLOCKWISE);
-  }
+		if(shift>0){
+    	cv::rotate(*dest, *dest, cv::ROTATE_90_CLOCKWISE);
+    	for(size_t i=0; i<shift; i++){
+    	  cv::Mat temp(0, dest->cols, dest->type());
+    	  dest->row((dest->rows)-1).copyTo(temp);
+    	  dest->pop_back(1);
+    	  cv::vconcat(temp, *dest, *dest);
+			}
+		} else {
+			cv::rotate(*dest, *dest, cv::ROTATE_90_CLOCKWISE);
+			for(size_t i=0; i<abs(shift); i++){
+				cv::Mat temp(0, dest->cols, dest->type());
+				dest->row(0).copyTo(temp);
+				cv::vconcat((*dest)(cv::Range(1, dest->rows), cv::Range::all()), temp, *dest);
+			}
+		}
+		cv::rotate(*dest, *dest, cv::ROTATE_90_COUNTERCLOCKWISE);
+	}
 }
 
 //------------------------//
@@ -334,15 +355,16 @@ void W_update(cv::Mat *dest, cv::Mat *rho, cv::Mat *image_est){
 //------------------------//
 // src should be a 2 channel matrix
 void PsiT(cv::Mat *dest, cv::Mat *src){
+	class Timer t(&PsiT_times); // start timer
 	cv::Mat frames[src->channels()];
 	cv::Mat diffs[src->channels()];
 
 	cv::split(*src, frames);
 
-	roll(&diffs[0], &frames[0], (frames[0].rows - 1), 0);
+	roll(&diffs[0], &frames[0], -1, 0);
 	diffs[0] = diffs[0] - frames[0];
 
-	roll(&diffs[1], &frames[1], (frames[1].cols - 1), 1);
+	roll(&diffs[1], &frames[1], -1, 1);
 	diffs[1] = diffs[1] - frames[1];
 
 	*dest = diffs[0] + diffs[1];
@@ -353,6 +375,7 @@ void PsiT(cv::Mat *dest, cv::Mat *src){
 // DONE 100%
 //------------------------//
 void MT(cv::Mat *dest, cv::Mat *x, cv::Mat *H_fft){
+	class Timer t(&MT_times); // start timer
 	cv::Mat x_planes[x->channels()];
 
 	cv::split(*x, x_planes);
@@ -380,7 +403,7 @@ void MT(cv::Mat *dest, cv::Mat *x, cv::Mat *H_fft){
 // DONE 100%
 //------------------------//
 void r_calc(cv::Mat *dest, cv ::Mat *w, cv::Mat *rho, cv::Mat *u, cv::Mat *eta, cv::Mat *x, cv::Mat *xi, cv::Mat *H_fft){
-
+	class Timer t(&r_calc_times); // start timer
 	cv::Mat p1;
 	p1 = w->mul(mu3);
 	cv::subtract(p1, *rho, p1);
@@ -652,6 +675,12 @@ void printTimings(void){
 	printFunctionTiming(rho_update_times, "rho_update");
 
 	printFunctionTiming(xi_update_times, "xi_update");
+
+	printFunctionTiming(r_calc_times, "r_calc");
+
+	printFunctionTiming(PsiT_times, "PsiT");
+
+	printFunctionTiming(MT_times, "MT");
 
 }
 
