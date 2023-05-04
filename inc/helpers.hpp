@@ -3,20 +3,23 @@
 
 /* ADMM helper functions */
 #include <stdio.h>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/utility.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/core/hal/interface.h>
 #include <cmath>
 #include <iostream>
 #include <fstream>
 #include <chrono>
 #include <vector>
 #include <numeric>
-#include "classes.hpp"
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/utility.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/core/hal/interface.h>
+
 #include "configs.hpp"
+#include "Csvfile.hpp"
+#include "Timer.hpp"
 
 
 std::vector<std::chrono::microseconds> ADMM_Step_times;
@@ -639,7 +642,7 @@ cv::Mat runADMM(cv::Mat *psf, cv::Mat *data){
 
 
 void printFunctionTiming(std::vector<std::chrono::microseconds> durations, std::string functionName){
-	class csvfile file(CSV_FILE);
+	class Csvfile file(CSV_FILE);
 	double sum = 0;
 	file << functionName;
 	for (auto i : durations){
@@ -655,7 +658,7 @@ void printFunctionTiming(std::vector<std::chrono::microseconds> durations, std::
 
 
 void printTimings(void){
-	class csvfile file(CSV_FILE);
+	class Csvfile file(CSV_FILE);
 	file << "Function_name";
 	for (int i = 0; i < iters; i++)
 		file << "Iteration_" + std::to_string(i+1) + " (ms)";

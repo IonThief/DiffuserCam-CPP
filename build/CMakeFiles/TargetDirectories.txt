@@ -1,3 +1,0 @@
-/home/ibrahim/thesis/software/cpp-algorithm/build/CMakeFiles/a.dir
-/home/ibrahim/thesis/software/cpp-algorithm/build/CMakeFiles/edit_cache.dir
-/home/ibrahim/thesis/software/cpp-algorithm/build/CMakeFiles/rebuild_cache.dir
