@@ -696,4 +696,19 @@ double averageStepTimes(void){
 
 }
 
+void zero_vectors(void){
+	U_update_times.clear();
+	W_update_times.clear();
+	X_update_times.clear();
+	V_update_times.clear();
+	eta_update_times.clear();
+	rho_update_times.clear();
+	xi_update_times.clear();
+	r_calc_times.clear();
+	PsiT_times.clear();
+	MT_times.clear();
+	ADMM_Step_times.clear();
+	runADMM_times.clear();
+}
+
 #endif

@@ -11,14 +11,17 @@ add_executable(reconstruct ${SOURCE_FILES})
 
 # Prerequisite libraries
 find_package(OpenCV REQUIRED)
+find_package(pylon REQUIRED)
 
 # Project include paths
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/inc
   ${OpenCV_INCLUDE_DIRS}
+	${pylon_INCLUDE_DIRS}
 )
 
-# Link libraries 
+# Link libraries
 target_link_libraries(reconstruct
   ${OpenCV_LIBS}
+	${pylon_LIBRARIES}
 )
